@@ -7,7 +7,7 @@ function App() {
   // const userType = getUserType();  (for future)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[#E3E6E7]">
       <Router>
         <Routes>
           <Route path="/" element={<ExpenseTracker />} />
