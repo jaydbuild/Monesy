@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, CornerDownRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import * as storage from "../storage"; // added storage import
 
@@ -30,7 +30,7 @@ function ExpenseTracker() {
   useEffect(() => {
     const target = parseFloat(amount) || 0;
     let start = displayAmount;
-    const duration = 300;
+    const duration = 100;
     const frameRate = 1000 / 60;
     const totalFrames = duration / frameRate;
     let currentFrame = 0;
@@ -72,7 +72,7 @@ function ExpenseTracker() {
   };
 
   return (
-    <div className="p-8 w-full max-w-md mx-auto flex flex-col items-center mb-8"> 
+    <div className="p-8 w-full max-w-md mx-auto flex flex-col items-center mb-8">
       {/* Title input */}
       <input
         type="text"
@@ -98,7 +98,7 @@ function ExpenseTracker() {
           onBlur={() => setAmountIsFocused(false)}
           value={amountisFocused ? amount : displayAmount}
           onChange={(e) => setAmount(e.target.value)}
-          className="text-6xl font-bold text-center outline-none bg-transparent px-1"
+          className="text-6xl font-bold text-center outline-none bg-transparent px-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           style={{ minWidth: 60 }}
           animate={{ width: inputWidth }}
           initial={false}
@@ -107,7 +107,7 @@ function ExpenseTracker() {
         <span className="text-sm font-medium text-gray-400 ml-2">INR</span>
 
         {/* Add Button */}
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {title.trim() !== "" && amount.trim() !== "" && (
             <motion.button
               key="add-button"
@@ -139,15 +139,22 @@ function ExpenseTracker() {
                 y: -2,
                 transition: { duration: 0.1, ease: "easeOut" },
               }}
-              transition={{ duration: 0.3 }}
-              className="flex justify-between items-center px-2 group hover:bg-gray-200 transition duration-300 rounded-lg p-2"
+              transition={{ duration: 0.1 }}
+              className="flex justify-between items-center px-2 group transition duration-100 rounded-lg p-2"
             >
-              <span>{exp.title}</span>
+              <div className="flex items-center gap-2">
+                <CornerDownRight
+                  size={14}
+                  className="absolut left-5 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-100"
+                />
+                <span className="text-sm font-medium">{exp.title}</span>
+
+              </div>
               <div className="flex items-center gap-2 text-right">
                 <span>{exp.amount} INR</span>
                 <button
                   onClick={() => handleDelete(exp.id)}
-                  className="text-red-500 opacity-0 group-hover:opacity-100 hover:text-red-700 transition-opacity duration-200"
+                  className="absolute -right-5 text-red-500 opacity-0 group-hover:opacity-100 hover:text-red-700 transition-opacity duration-100"
                 >
                   <Trash2 size={18} />
                 </button>
@@ -157,7 +164,7 @@ function ExpenseTracker() {
         </motion.div>
 
         {/* Total Block */}
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {expenses.length > 1 && (
             <motion.div
               key="total-block"
@@ -165,14 +172,14 @@ function ExpenseTracker() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.1 }}
               className="sticky bottom-0 bg-gray-100 pt-4"
             >
               <div className="border-t border-dashed border-gray-400 my-2"></div>
               <div className="flex justify-between items-center px-1 py-2">
-                <span className="font-semibold">Total</span>
+                <span className="font-semibold ml-5">Total</span>
                 <div className="flex items-center gap-2 text-right">
-                  <span className="font-bold">
+                  <span className="font-bold -mr-9">
                     {expenses.reduce((sum, exp) => sum + exp.amount, 0)} INR
                   </span>
                   <div className="w-5 h-5 opacity-0"></div>
